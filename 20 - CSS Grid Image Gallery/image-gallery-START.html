@@ -51,9 +51,83 @@
       border: 0;
     }
 
-    .gallery {}
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, 100px);
+      grid-auto-rows: 100px;
+      grid-auto-flow: dense;
+      justify-content: center;
+      align-content: center;
+    }
 
+    .item {
+      overflow: hidden;
+      display: grid;
+    }
 
+    .item img {
+      grid-column: 1/-1;
+      grid-row: 1/-1;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .h1 {
+      grid-column: span 1;
+    }
+
+    .h2 {
+      grid-column: span 2;
+    }
+
+    .h3 {
+      grid-column: span 3;
+    }
+
+    .h4 {
+      grid-column: span 4;
+    }
+
+    .v1 {
+      grid-row: span 1;
+    }
+
+    .v2 {
+      grid-row: span 2;
+    }
+
+    .v3 {
+      grid-row: span 3;
+    }
+
+    .v4 {
+      grid-row: span 4;
+    }
+
+    .item__overlay {
+      display: grid;
+      grid-column: 1/-1;
+      grid-row: 1/-1;
+      background: #ffc60032;
+      position: relative;
+      justify-items: center;
+      align-items: center;
+      transition: .2s;
+      transform: translateY(100%);
+    }
+
+    .item__overlay button {
+      border: 2px solid white;
+      color: white;
+      text-transform: uppercase;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 5px;
+    }
+
+    .item:hover .item__overlay {
+      transform: translateY(0%);
+    }
 
     .overlay {
       position: fixed;
@@ -82,6 +156,53 @@
   </style>
 
   <script>
+    function getRnd(base) {
+      return Math.ceil((Math.random() * base));
+    }
+    function getItemClass() {
+      return `item h${getRnd(4)} v${getRnd(4)}`;
+    }
+    function getImgSrc() {
+      return `./images/${getRnd(12)}.jpg`;
+    }
+
+    function createImg() {
+      const img = document.createElement("img");
+      img.src = getImgSrc();
+      return img;
+    }
+
+    function createItem() {
+      const item = document.createElement("div");
+      item.className = getItemClass();
+      const img = createImg();
+      const itemOverlay = createOverlay();
+      item.appendChild(img);
+      item.appendChild(itemOverlay);
+      return item;
+    }
+
+    function createButton() {
+      const btn = document.createElement("button");
+      btn.textContent = 'View -->';
+      return btn;
+    }
+
+    function createOverlay() {
+      const itemOverlay = document.createElement("div");
+      itemOverlay.className = 'item__overlay';
+      const btn = createButton();
+      itemOverlay.appendChild(btn);
+      return itemOverlay;
+    }
+
+    const load = () => {
+      const gallery = document.getElementsByClassName("gallery")[0];
+      for (let index = 0; index < 50; index++) {
+        gallery.appendChild(createItem());
+      }
+    }
+    window.onload = load;
   </script>
 </body>
 
