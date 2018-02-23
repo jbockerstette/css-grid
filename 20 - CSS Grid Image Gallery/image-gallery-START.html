@@ -12,8 +12,10 @@
 
   <div class="overlay">
     <div class="overlay-inner">
-      <button class="close">× Close</button>
-      <img>
+      <button onclick="close1()" class="close">× Close</button>
+      <figure>
+        <img>
+      </figure>
     </div>
   </div>
 
@@ -176,24 +178,39 @@
       const item = document.createElement("div");
       item.className = getItemClass();
       const img = createImg();
-      const itemOverlay = createOverlay();
+      const itemOverlay = createOverlay(img.src);
       item.appendChild(img);
       item.appendChild(itemOverlay);
       return item;
     }
 
-    function createButton() {
+    function createButton(imgSrc) {
       const btn = document.createElement("button");
       btn.textContent = 'View -->';
+      btn.onclick = open(imgSrc);
       return btn;
     }
 
-    function createOverlay() {
+    function createOverlay(imgSrc) {
       const itemOverlay = document.createElement("div");
       itemOverlay.className = 'item__overlay';
-      const btn = createButton();
+      const btn = createButton(imgSrc);
       itemOverlay.appendChild(btn);
       return itemOverlay;
+    }
+
+    function close1() {
+      const e = document.getElementsByClassName('overlay open')[0];
+      e.className = 'overlay';
+    }
+
+    const open = (imgSrc) => () => {
+      const overlay = document.getElementsByClassName('overlay')[0];
+      overlay.className = 'overlay open';
+      const img = document.querySelector("div.overlay-inner img");
+      console.log(imgSrc);
+
+      img.src = imgSrc;
     }
 
     const load = () => {
